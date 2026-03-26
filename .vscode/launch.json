@@ -7,10 +7,7 @@
       "name": "Debug Node.js",
       "program": "${workspaceFolder}/server.js",
       "skipFiles": ["<node_internals>/**"],
-      "runtimeArgs": ["--inspect"],
-      "env": {
-        "NODE_ENV": "production"
-      }
+      "runtimeArgs": ["--inspect"]
     }
   ]
 }
