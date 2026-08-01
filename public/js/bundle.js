@@ -6923,18 +6923,46 @@ const signup = async (name, email, password, passwordConfirm) => {
   }
 };
 exports.signup = signup;
+},{"axios":"../../node_modules/axios/index.js","./alerts":"alerts.js"}],"stripe.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.bookTour = void 0;
+var _axios = _interopRequireDefault(require("axios"));
+var _alerts = require("./alerts");
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+const stripe = Stripe('pk_test_51TzWqKJasE724jjz7pd5kTmnfylaw1udM9WxxqVzCJvjAo6pfvx6pO5My7H2CFdpom8CmZfZ4I062l8NqMYi1rUk00zXoFU2lu');
+const bookTour = async tourId => {
+  try {
+    // 1) Get checkout session from API
+    const session = await (0, _axios.default)("http://127.0.0.1:3000/api/v1/bookings/checkout-session/".concat(tourId));
+
+    // 2) Create checkout form + charge credit card
+    await stripe.redirectToCheckout({
+      sessionId: session.data.session.id
+    });
+  } catch (err) {
+    console.log(err);
+    (0, _alerts.showAlert)('error', err);
+  }
+};
+exports.bookTour = bookTour;
 },{"axios":"../../node_modules/axios/index.js","./alerts":"alerts.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _login = require("./login");
 var _updateSettings = require("./updateSettings");
 var _signup = require("./signup");
+var _stripe = require("./stripe");
 // DOM ELEMENTS
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const signupForm = document.querySelector('.form--signup');
+const bookBtn = document.getElementById('book-tour');
 if (loginForm) loginForm.addEventListener('submit', e => {
   e.preventDefault();
   const email = document.getElementById('email').value;
@@ -6974,7 +7002,12 @@ if (signupForm) signupForm.addEventListener('submit', e => {
   const passwordConfirm = document.getElementById('passwordConfirm').value;
   (0, _signup.signup)(name, email, password, passwordConfirm);
 });
-},{"./login":"login.js","./updateSettings":"updateSettings.js","./signup":"signup.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+if (bookBtn) bookBtn.addEventListener('click', e => {
+  e.target.textContent = 'Proccessing...';
+  const tourId = e.target.dataset.tourId;
+  (0, _stripe.bookTour)(tourId);
+});
+},{"./login":"login.js","./updateSettings":"updateSettings.js","./signup":"signup.js","./stripe":"stripe.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -6999,7 +7032,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56858" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63822" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

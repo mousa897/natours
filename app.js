@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const bookingRouter = require('./routes/bookingRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -25,12 +26,22 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set Security HTTP Headers
+// Set Security HTTP Headers
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", 'https://unpkg.com', 'https://cdn.jsdelivr.net'], // ← add this
+        scriptSrc: [
+          "'self'",
+          'https://unpkg.com',
+          'https://cdn.jsdelivr.net',
+          'https://js.stripe.com', // 👈 Allowed Stripe scripts
+        ],
+        frameSrc: [
+          "'self'",
+          'https://js.stripe.com', // 👈 Allowed Stripe iframes
+        ],
         styleSrc: [
           "'self'",
           'https://unpkg.com',
@@ -42,11 +53,14 @@ app.use(
           'data:',
           'https://*.openstreetmap.org',
           'https://unpkg.com',
+          'https://*.stripe.com', // 👈 Allowed Stripe images
         ],
         connectSrc: [
           "'self'",
           'https://*.openstreetmap.org',
           'https://cdn.jsdelivr.net',
+          'https://js.stripe.com', // 👈 Stripe connections
+          'https://api.stripe.com', // 👈 Stripe API calls
           'ws://127.0.0.1:*',
         ],
       },
@@ -103,6 +117,7 @@ app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/bookings', bookingRouter);
 //
 
 // ERROR
