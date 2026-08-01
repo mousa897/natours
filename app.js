@@ -36,11 +36,11 @@ app.use(
           "'self'",
           'https://unpkg.com',
           'https://cdn.jsdelivr.net',
-          'https://js.stripe.com', // 👈 Allowed Stripe scripts
+          'https://js.stripe.com', // 👈 Allows Stripe script execution
         ],
         frameSrc: [
           "'self'",
-          'https://js.stripe.com', // 👈 Allowed Stripe iframes
+          'https://js.stripe.com', // 👈 Required for Stripe Checkout iframe
         ],
         styleSrc: [
           "'self'",
@@ -53,14 +53,15 @@ app.use(
           'data:',
           'https://*.openstreetmap.org',
           'https://unpkg.com',
-          'https://*.stripe.com', // 👈 Allowed Stripe images
+          'https://*.stripe.com',
         ],
+        mediaSrc: ["'self'", 'https://ssl.gstatic.com'], // 👈 Fixes the audio sound block error
         connectSrc: [
           "'self'",
           'https://*.openstreetmap.org',
           'https://cdn.jsdelivr.net',
-          'https://js.stripe.com', // 👈 Stripe connections
-          'https://api.stripe.com', // 👈 Stripe API calls
+          'https://js.stripe.com',
+          'https://api.stripe.com',
           'ws://127.0.0.1:*',
         ],
       },

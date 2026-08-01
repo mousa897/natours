@@ -6933,6 +6933,8 @@ exports.bookTour = void 0;
 var _axios = _interopRequireDefault(require("axios"));
 var _alerts = require("./alerts");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+/* eslint-disable */
+
 const stripe = Stripe('pk_test_51TzWqKJasE724jjz7pd5kTmnfylaw1udM9WxxqVzCJvjAo6pfvx6pO5My7H2CFdpom8CmZfZ4I062l8NqMYi1rUk00zXoFU2lu');
 const bookTour = async tourId => {
   try {
