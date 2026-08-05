@@ -2,3 +2,4 @@ node_modules/
 config.env
 public/tour.html
 public/overview.html
+.cache/

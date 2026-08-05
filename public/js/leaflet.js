@@ -1,5 +1,4 @@
 const locations = JSON.parse(document.getElementById('map').dataset.locations);
-console.log(locations);
 
 var map = L.map('map', { zoomControl: false });
 

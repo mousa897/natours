@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -26,7 +27,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set Security HTTP Headers
-// Set Security HTTP Headers
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -36,12 +36,9 @@ app.use(
           "'self'",
           'https://unpkg.com',
           'https://cdn.jsdelivr.net',
-          'https://js.stripe.com', // 👈 Allows Stripe script execution
+          'https://js.stripe.com',
         ],
-        frameSrc: [
-          "'self'",
-          'https://js.stripe.com', // 👈 Required for Stripe Checkout iframe
-        ],
+        frameSrc: ["'self'", 'https://js.stripe.com'],
         styleSrc: [
           "'self'",
           'https://unpkg.com',
@@ -55,7 +52,7 @@ app.use(
           'https://unpkg.com',
           'https://*.stripe.com',
         ],
-        mediaSrc: ["'self'", 'https://ssl.gstatic.com'], // 👈 Fixes the audio sound block error
+        mediaSrc: ["'self'", 'https://ssl.gstatic.com'],
         connectSrc: [
           "'self'",
           'https://*.openstreetmap.org',
@@ -68,6 +65,8 @@ app.use(
     },
   }),
 );
+
+app.use(compression());
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
