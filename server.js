@@ -7,7 +7,13 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
+// Load local config.env if it exists (for local development)
 dotenv.config({ path: './config.env' });
+
+// Fallback to system env variables if config.env wasn't loaded
+const DB_STRING = process.env.DATABASE;
+const DB_PASS = process.env.DATABASE_PASSWORD;
+
 const app = require('./app');
 
 const DB = process.env.DATABASE.replace(
