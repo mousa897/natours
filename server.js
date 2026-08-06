@@ -13,10 +13,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const app = require('./app');
 
-const DB = process.env.DATABASE.replace(
-  '<PASSWORD>',
-  process.env.DATABASE_PASSWORD,
-);
+const DB = process.env.DATABASE;
 
 mongoose
   .connect(DB, {
